@@ -6,7 +6,6 @@ public class Target : MonoBehaviour {
 
     public int type; //0 is bottom row, 1 is middle, 2 is top; set by TargetSpawner
     public float speed;
-    public GameManager mgr;
 
 	// Use this for initialization
 	void Start()
@@ -30,7 +29,7 @@ public class Target : MonoBehaviour {
 
     public void TargetHit()
     {
-        mgr.TargetHit();
+        GameManager.TargetHit(type);
         Destroy(this.gameObject);
     }
 

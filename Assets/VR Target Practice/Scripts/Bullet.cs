@@ -2,28 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bullet : MonoBehaviour {
+public class Bullet : MonoBehaviour
+{
+    private void OnCollisionEnter(Collision collision) {
+        Debug.Log(collision.gameObject.name);
 
-	// Use this for initialization
-	void Start() {
-
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.tag == "Target")
-        {
+        if (collision.gameObject.tag == "Target") {
             Target targ = collision.gameObject.GetComponent<Target>();
             targ.TargetHit();
+            Destroy(this.gameObject);
         }
 
-        if(collision.gameObject.tag != "Pistol")
-            Destroy(this.gameObject);
+        StartCoroutine(WaitAndDestroy());
     }
 
+    IEnumerator WaitAndDestroy() {
+        yield return new WaitForSeconds(3);
+        Destroy(this);
+    }
 }

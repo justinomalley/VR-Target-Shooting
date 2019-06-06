@@ -2,34 +2,34 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
-public class GameManager : MonoBehaviour {
+public class GameManager : MonoBehaviour
+{
 
     public Pistol left, right;
-    public Text currScore, highScore, timer;
-    public int duration = 30;
-    public bool isCountingDown = false;
 
-    int curr = 0, high = 0, timeRemaining;
-    StartGame start;
     AudioSource startSound;
+    StartGame start;
+    //static TextMeshPro currScore, highScore, timer;
+    static int duration = 30;
+    static bool isCountingDown = false;
+    static int curr = 0, high = 0, timeRemaining;
 
-    void Start () {
+
+    GameManager instance;
+
+    void Start() {
+        instance = this;
         start = GetComponent<StartGame>();
         startSound = GetComponent<AudioSource>();
-	}
-	
-	void Update () {
-		
-	}
+    }
 
-    public void Begin()
-    {
+    public void Begin() {
         startSound.Play();
-        timer.text = duration.ToString();
+        //timer.text = duration.ToString();
 
-        if (!isCountingDown)
-        {
+        if (!isCountingDown) {
             isCountingDown = true;
             timeRemaining = duration;
             Invoke("Tick", 1f);
@@ -39,38 +39,37 @@ public class GameManager : MonoBehaviour {
         right.enabled = true;
     }
 
-    private void Tick()
-    {
-        timeRemaining--;
-        timer.text = timeRemaining.ToString();
+    public static bool Playing() {
+        return isCountingDown;
+    }
 
-        if (timeRemaining > 0)
-        {
+    private void Tick() {
+        timeRemaining--;
+        //timer.text = timeRemaining.ToString();
+
+        if (timeRemaining > 0) {
             Invoke("Tick", 1f);
-        }
-        else
-        {
+        } else {
+            Debug.Log("ending game, score is " + curr);
+            //Game over
             left.enabled = false;
             right.enabled = false;
             curr = 0;
-            currScore.text = curr.ToString();
+            //currScore.text = curr.ToString();
             isCountingDown = false;
             start.enabled = true;
         }
-        
+
     }
 
-    public void TargetHit()
-    {
-        if (isCountingDown)
-        {
+    public static void TargetHit(int type) {
+        if (isCountingDown) {
             curr++;
-            currScore.text = curr.ToString();
+            //currScore.text = curr.ToString();
 
-            if (curr > high)
-            {
+            if (curr > high) {
                 high = curr;
-                highScore.text = high.ToString();
+                //highScore.text = high.ToString();
             }
         }
     }

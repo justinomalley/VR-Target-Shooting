@@ -12,12 +12,7 @@ public class SpawnerManager : MonoBehaviour {
         spawners = GetComponentsInChildren<TargetSpawner>();
         for (int i = 0; i < spawners.Length; i++)
         {
-            spawners[i].secBetweenSpawns = secsBetweenSpawns;
+            spawners[i].SetSpawnTime(secsBetweenSpawns);
         }
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
 	}
 }
